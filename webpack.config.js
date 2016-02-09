@@ -30,7 +30,7 @@ module.exports = {
 
             // jsx (React), js
             {
-                test: /\.jsx$/,
+                test: /\.jsx?$/,
                 exclude: /node_modules/,
                 loaders: ['babel'],
                 include: __dirname
