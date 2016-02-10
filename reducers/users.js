@@ -16,7 +16,7 @@ export default function users(state = initialState, action) {
         {
           name: action.name,
           email: action.email,
-          tel: action.tel,
+          phone: action.phone,
           city: action.city,
           country: action.country,
           mobileOS: action.mobileOS

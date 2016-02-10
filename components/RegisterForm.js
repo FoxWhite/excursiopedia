@@ -105,7 +105,7 @@ class RegisterForm extends React.Component {
 
   render() {
     // console.log(allCountries);
-    const {fields: {name, email, tel, city, country, mobileOS}, handleSubmit} = this.props;
+    const {fields: {name, email, phone, city, country, mobileOS}, handleSubmit} = this.props;
     return (
       <div className = 'form-register'>
         <form onSubmit={handleSubmit}>
@@ -116,7 +116,7 @@ class RegisterForm extends React.Component {
             <input type="text" placeholder="E-mail" {...email}/>
           </div>
           <div>
-            <input type="text" placeholder="Телефон" {...tel}/>
+            <input type="text" placeholder="Телефон" {...phone}/>
           </div>
           <div className='input-country'>
             <input
@@ -171,5 +171,5 @@ class RegisterForm extends React.Component {
 
 export default reduxForm({ 
   form: 'register',                   
-  fields: ['name', 'email', 'tel', 'city', 'country','mobileOS']
+  fields: ['name', 'email', 'phone', 'city', 'country','mobileOS']
 })(RegisterForm);
