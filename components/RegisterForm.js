@@ -151,7 +151,15 @@ class RegisterForm extends React.Component {
               />              
           </div>          
           <div>
-            <input type="text" placeholder="ОС" {...mobileOS}/>
+            <select {...mobileOS} value={mobileOS.value || ''}>
+              <option value='' disabled = {true}>ОС мобильного</option>
+              <option value='Android'>Android</option>
+              <option value='Apple iOS‎'>Apple iOS‎</option>
+              <option value='Windows Mobile'>Windows Mobile</option>
+              <option value='BlackBerry‎'>BlackBerry‎</option>
+              <option value='Symbian'>Symbian</option>
+              <option value='other'>Другое</option>
+            </select>
           </div>
           <button type="submit">Регистрация</button>
         </form>
