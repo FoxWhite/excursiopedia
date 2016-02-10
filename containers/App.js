@@ -20,17 +20,9 @@ export default class App extends Component {
   }
 
   handleRegisterSubmit = (data, dispatch) => {
-    console.log('data',data);
-    dispatch({
-      type: 'ADD_USER',
-      name: data.name,
-      email: data.email,
-      tel: data.tel,
-      city: data.city,
-      country: data.country,
-      mobileOS: data.mobileOS
-    });
-    // console.log(store.getState());
+    // simulating server latency
+    new Promise(resolve =>
+        setTimeout(() => resolve(this.addUser(data,dispatch)), 500))
   };
 
   handleLogInSubmit (data) {
@@ -47,6 +39,18 @@ export default class App extends Component {
     // console.log(store.getState());
   }
 
+  addUser (data,dispatch) {
+    console.log('data',data);
+    dispatch({
+      type: 'ADD_USER',
+      name: data.name,
+      email: data.email,
+      tel: data.tel,
+      city: data.city,
+      country: data.country,
+      mobileOS: data.mobileOS
+    });
+  }
   
 }
 

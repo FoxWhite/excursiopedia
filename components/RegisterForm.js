@@ -7,6 +7,34 @@ import _ from 'redux/node_modules/lodash';
 
 let allCountries = {};
 let allCities = {};
+// name, email, phone, city, country, mobileOS
+const validate = values => {
+  const errors = {};
+  if (!values.name) {
+    errors.name = 'Required';
+  }
+  if (!values.email) {
+    errors.email = 'Required';
+  } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
+    errors.email = 'Invalid email address';
+  }
+  if (!values.phone) {
+    errors.phone = 'Required';
+  }
+  if (!values.city) {
+    errors.city = 'Required';
+  }
+  if (!values.country) {
+    errors.country = 'Required';
+  }
+  if (!values.mobileOS) {
+    errors.mobileOS = 'Required';
+  }
+  return errors;
+};
+
+
+
 
 class RegisterForm extends React.Component {
   constructor(props){
@@ -44,7 +72,7 @@ class RegisterForm extends React.Component {
         this.updateMatchingCities(); 
       }   
       else {
-         console.warn('PARSING ERROR NO COUNTRY MATCH');
+         console.warn('NO COUNTRY MATCH');
         countryField.onChange('');
         countryField.onFocus();
         this.refs.countryInput.focus();
@@ -105,20 +133,23 @@ class RegisterForm extends React.Component {
 
   render() {
     // console.log(allCountries);
-    const {fields: {name, email, phone, city, country, mobileOS}, handleSubmit} = this.props;
+    const {fields: {name, email, phone, city, country, mobileOS}, handleSubmit, submitting} = this.props;
     return (
       <div className = 'form-register'>
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className={'form-group' + (name.touched && name.error ? ' has-error' : '')}>
             <input type="text" placeholder="ФИО" {...name}/>
+            {name.touched && name.error && <div className = 'error-message'>{name.error}</div>}
           </div>
-          <div>
+          <div className={'form-group' + (email.touched && email.error ? ' has-error' : '')}>
             <input type="text" placeholder="E-mail" {...email}/>
+            {email.touched && email.error && <div className = 'error-message'>{email.error}</div>}
           </div>
-          <div>
+          <div className={'form-group' + (phone.touched && phone.error ? ' has-error' : '')}>
             <input type="text" placeholder="Телефон" {...phone}/>
+            {phone.touched && phone.error && <div className = 'error-message'>{phone.error}</div>}
           </div>
-          <div className='input-country'>
+          <div className={'input-country form-group' + (country.touched && country.error ? ' has-error' : '')}>
             <input
               ref = 'countryInput' 
               className = 'input-country-real'
@@ -134,8 +165,9 @@ class RegisterForm extends React.Component {
               type="text" 
               disabled = 'disabled' 
             />
+            {country.touched && country.error && <div className = 'error-message'>{country.error}</div>}
           </div>
-          <div className='input-city'>
+          <div className={'input-city form-group' + (city.touched && city.error ? ' has-error' : '')}>
             <input 
               onKeyUp = {this.handleCitiesInput}
               className = 'input-city-real'
@@ -148,9 +180,10 @@ class RegisterForm extends React.Component {
               ref = 'citySuggestor'
               type="text" 
               disabled = 'disabled' 
-              />              
+              />    
+              {city.touched && city.error && <div className = 'error-message'>{city.error}</div>}          
           </div>          
-          <div>
+          <div className={'form-group' + (mobileOS.touched && mobileOS.error ? ' has-error' : '')}>
             <select {...mobileOS} value={mobileOS.value || ''}>
               <option value='' disabled = {true}>ОС мобильного</option>
               <option value='Android'>Android</option>
@@ -160,8 +193,9 @@ class RegisterForm extends React.Component {
               <option value='Symbian'>Symbian</option>
               <option value='other'>Другое</option>
             </select>
+            {mobileOS.touched && mobileOS.error && <div className = 'error-message'>{mobileOS.error}</div>}
           </div>
-          <button type="submit">Регистрация</button>
+          <button type="submit" disabled={submitting}>Регистрация</button>
         </form>
       </div>
     );
@@ -171,5 +205,6 @@ class RegisterForm extends React.Component {
 
 export default reduxForm({ 
   form: 'register',                   
-  fields: ['name', 'email', 'phone', 'city', 'country','mobileOS']
+  fields: ['name', 'email', 'phone', 'city', 'country','mobileOS'],
+  validate
 })(RegisterForm);
