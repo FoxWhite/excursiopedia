@@ -2,34 +2,57 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 // import './ObjectSelect';
 import { findDOMNode } from 'react-dom';
-import * as ac from '../helpers/Autocomplete.js';
+import * as vk from '../helpers/VkQueries';
 import _ from 'redux/node_modules/lodash';
 
 let allCountries = {};
-
 class RegisterForm extends React.Component {
   constructor(props){
     super(props);
 
     this.state = {
       matchingCountries: [],
+      matchingCities: []
     }   
   }
 
   componentDidMount() {  
     //fetching countries data from vk.api
-    ac.getAllCountries(data => {
+    vk.getAllCountries(data => {
       allCountries = data;
     });
   }
 
   componentWillReceiveProps (nextProps) {
-    let wasFocused = this.props.active,
-        becameFocused = nextProps.active;
 
+    let wasFocused = this.props.active,
+        becameFocused = nextProps.active,
+
+        countryField = nextProps.fields.country,
+        countriesArr = this.state.matchingCountries;
+
+    console.log(wasFocused, becameFocused)
     if (wasFocused === 'country' && becameFocused !== wasFocused) {
-      nextProps.fields.country.onChange(this.state.matchingCountries[0]);
+      console.log('Lost focus. array: ', countriesArr);
+      if (this.state.matchingCountries[0])  {
+        countryField.onChange(this.state.matchingCountries[0]);   
+      }   
+      else {
+         console.warn('PARSING ERROR NO COUNTRY MATCH');
+        countryField.onChange('');
+        countryField.onFocus();
+        this.refs.countryInput.focus();
+
+      }
     }
+    
+    let cityInput = this.props.fields.city.value;
+    console.log(cityInput);
+
+    vk.getAllCities(data => {
+      this.state.matchingCities = data;
+    },
+    1, cityInput);        
   }
 
 
@@ -57,23 +80,35 @@ class RegisterForm extends React.Component {
             <input type="text" placeholder="Телефон" {...tel}/>
           </div>
           <div className='input-country'>
-            <input 
+            <input
+              ref = 'countryInput' 
               className = 'input-country-real'
               type="text" 
               placeholder="Страна" 
               autoComplete={'off'}
               onKeyUp = {this.handleCountriesInput} 
               {...country}
-              />
+            />
             <input 
               className = 'input-country-fake'
               ref = 'countrySuggestor'
               type="text" 
               disabled = 'disabled' 
-              />
+            />
           </div>
-          <div>
-            <input type="text" placeholder="Город" {...city}/>
+          <div className='input-city'>
+            <input 
+              className = 'input-city-real'
+              type="text" 
+              placeholder="Город" 
+              {...city}
+            />
+            <input 
+              className = 'input-country-fake'
+              ref = 'citySuggestor'
+              type="text" 
+              disabled = 'disabled' 
+              />              
           </div>          
           <div>
             <input type="text" placeholder="ОС" {...mobileOS}/>
