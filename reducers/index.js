@@ -7,7 +7,6 @@ const rootReducer = combineReducers({
   users,
   form: formReducer.normalize({
     register: {
-      country: normalizeCountry
     }
   })
 });

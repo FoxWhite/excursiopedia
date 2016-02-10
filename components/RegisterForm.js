@@ -17,6 +17,7 @@ class RegisterForm extends React.Component {
   }
 
   componentDidMount() {  
+    //fetching countries data from vk.api
     ac.getAllCountries(data => {
       allCountries = data;
     });
@@ -25,78 +26,59 @@ class RegisterForm extends React.Component {
   componentWillReceiveProps (nextProps) {
     let wasFocused = this.props.active,
         becameFocused = nextProps.active;
-        console.log('wasFocused',wasFocused,'becameFocused', becameFocused );
-    // handle Country selector losing focus
-    if (wasFocused === 'suggestedCountry' && becameFocused !== wasFocused) {
-      //remove selector after it losing focus
-      this.setState({matchingCountries: []});
-    }
-    else if (wasFocused === 'country' && becameFocused !== wasFocused) {
-      nextProps.fields.country.onChange(this.refs.countrySelector[0].value);
+
+    if (wasFocused === 'country' && becameFocused !== wasFocused) {
+      nextProps.fields.country.onChange(this.state.matchingCountries[0]);
     }
   }
 
 
   componentDidUpdate(nextProps, nextState) {
-    let refs = this.refs;
-    // filling fake country input with value from country selector
-    refs.countrySuggestor.value = refs.countrySelector ? refs.countrySelector[0].value : ''
+    let refs = this.refs,
+        state = this.state;
+        console.log (refs.countrySuggestor.value);
+    refs.countrySuggestor.value = state.matchingCountries.length > 0 ? state.matchingCountries[0] : ''
   }
 
 
 
   render() {
-    const {fields: {name, email, tel, city, country, suggestedCountry, mobileOS}, handleSubmit} = this.props;
+    const {fields: {name, email, tel, city, country, mobileOS}, handleSubmit} = this.props;
     return (
       <div className = 'form-register'>
         <form onSubmit={handleSubmit}>
           <div>
-            <input type="text" placeholder="First Name" {...name}/>
+            <input type="text" placeholder="ФИО" {...name}/>
           </div>
           <div>
-            <input type="text" placeholder="email" {...email}/>
+            <input type="text" placeholder="E-mail" {...email}/>
           </div>
           <div>
-            <input type="text" placeholder="tel" {...tel}/>
-          </div>
-          <div>
-            <input type="text" placeholder="city" {...city}/>
+            <input type="text" placeholder="Телефон" {...tel}/>
           </div>
           <div className='input-country'>
             <input 
+              className = 'input-country-real'
               type="text" 
-              placeholder="country" 
+              placeholder="Страна" 
               autoComplete={'off'}
               onKeyUp = {this.handleCountriesInput} 
               {...country}
               />
-
             <input 
+              className = 'input-country-fake'
               ref = 'countrySuggestor'
               type="text" 
               disabled = 'disabled' 
               />
-            {this.state.matchingCountries.length > 0  && 
-              <select 
-                ref = 'countrySelector'
-                {...suggestedCountry}
-                >
-                  {
-                    this.state.matchingCountries.map(function(option,index) {
-                      return (
-                        <option key={index} value={option}>
-                          {option}
-                        </option>
-                      );
-                    })
-                  }
-              </select>
-            }
           </div>
           <div>
-            <input type="text" placeholder="mobileOS" {...mobileOS}/>
+            <input type="text" placeholder="Город" {...city}/>
+          </div>          
+          <div>
+            <input type="text" placeholder="ОС" {...mobileOS}/>
           </div>
-          <button type="submit">Submit</button>
+          <button type="submit">Регистрация</button>
         </form>
       </div>
     );
@@ -110,18 +92,11 @@ class RegisterForm extends React.Component {
 
     this.setState({matchingCountries}); 
 
-    // handle Arrow down case
-    if (e.keyCode === 40) {
-      console.log('arrow hit');
-      // this.props.handleFocus('suggestedCountry');
-      this.props.fields.suggestedCountry.onFocus();
-      this.refs.countrySelector[0].selected = 'true';
-    }
   };
 
 }
 
 export default reduxForm({ 
   form: 'register',                   
-  fields: ['name', 'email', 'tel', 'city', 'country', 'suggestedCountry','mobileOS']
+  fields: ['name', 'email', 'tel', 'city', 'country','mobileOS']
 })(RegisterForm);
