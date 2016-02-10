@@ -5,6 +5,8 @@ import { render } from 'react-dom';
 import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import rootReducer from './reducers/index.js'
+
+import * as ac  from './helpers/Autocomplete.js'
 main();
 
 function main() {
@@ -17,4 +19,5 @@ function main() {
           <App/>
         </Provider>,
       app);    
+
 }

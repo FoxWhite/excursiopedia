@@ -20,6 +20,7 @@ export default class App extends Component {
   }
 
   handleRegisterSubmit = (data, dispatch) => {
+    console.log('data',data);
     dispatch({
       type: 'ADD_USER',
       name: data.name,
