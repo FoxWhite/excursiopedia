@@ -13,7 +13,6 @@ class RegisterForm extends React.Component {
 
     this.state = {
       matchingCountries: [],
-      suggestedCountry: null
     }   
   }
 
@@ -23,9 +22,31 @@ class RegisterForm extends React.Component {
     });
   }
 
+  componentWillReceiveProps (nextProps) {
+    let wasFocused = this.props.active,
+        becameFocused = nextProps.active;
+        console.log('wasFocused',wasFocused,'becameFocused', becameFocused );
+    // handle Country selector losing focus
+    if (wasFocused === 'suggestedCountry' && becameFocused !== wasFocused) {
+      //remove selector after it losing focus
+      this.setState({matchingCountries: []});
+    }
+    else if (wasFocused === 'country' && becameFocused !== wasFocused) {
+      nextProps.fields.country.onChange(this.refs.countrySelector[0].value);
+    }
+  }
+
+
+  componentDidUpdate(nextProps, nextState) {
+    let refs = this.refs;
+    // filling fake country input with value from country selector
+    refs.countrySuggestor.value = refs.countrySelector ? refs.countrySelector[0].value : ''
+  }
+
+
+
   render() {
-    const {fields: {name, email, tel, city, country, mobileOS}, handleSubmit} = this.props;
-    console.log('state: ',this.state);
+    const {fields: {name, email, tel, city, country, suggestedCountry, mobileOS}, handleSubmit} = this.props;
     return (
       <div className = 'form-register'>
         <form onSubmit={handleSubmit}>
@@ -45,20 +66,20 @@ class RegisterForm extends React.Component {
             <input 
               type="text" 
               placeholder="country" 
+              autoComplete={'off'}
               onKeyUp = {this.handleCountriesInput} 
-              onBlur = {this.handleCountriesBlur}
               {...country}
               />
 
             <input 
+              ref = 'countrySuggestor'
               type="text" 
               disabled = 'disabled' 
-              value = {this.state.suggestedCountry} 
               />
-            {this.state.matchingCountries.length > 0 && 
+            {this.state.matchingCountries.length > 0  && 
               <select 
-                onChange = {this.handleCountriesSelect} 
-                value = {this.state.suggestedCountry} 
+                ref = 'countrySelector'
+                {...suggestedCountry}
                 >
                   {
                     this.state.matchingCountries.map(function(option,index) {
@@ -81,35 +102,26 @@ class RegisterForm extends React.Component {
     );
   }
 
-
-  handleCountriesBlur = (e) => {
-    console.log('handleBlur');
-    let chosenCountry = this.state.suggestedCountry;
-
-    this.props.fields.country.onChange(chosenCountry);
-    e.target.value = chosenCountry;
-  };
-
-  handleCountriesSelect = (e) => {
-    console.log('==SELECT CHANGE==');
-    // console.log(e);
-    this.setState({suggestedCountry: e.target.value});
-    console.log(this.state);
-  };
-
   handleCountriesInput = (e) => {
     let input = e.target.value;
-
     let matchingCountries = _.map(_.filter(allCountries, (c) => {
       return _.startsWith(c.title.toUpperCase(), input.toUpperCase());
     }), 'title');
 
-    this.setState({matchingCountries, suggestedCountry: matchingCountries[0]});
+    this.setState({matchingCountries}); 
+
+    // handle Arrow down case
+    if (e.keyCode === 40) {
+      console.log('arrow hit');
+      // this.props.handleFocus('suggestedCountry');
+      this.props.fields.suggestedCountry.onFocus();
+      this.refs.countrySelector[0].selected = 'true';
+    }
   };
 
 }
 
 export default reduxForm({ 
   form: 'register',                   
-  fields: ['name', 'email', 'tel', 'city', 'country', 'mobileOS']
+  fields: ['name', 'email', 'tel', 'city', 'country', 'suggestedCountry','mobileOS']
 })(RegisterForm);
