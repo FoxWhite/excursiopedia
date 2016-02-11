@@ -5,7 +5,6 @@ import { findDOMNode } from 'react-dom';
 import * as vk from '../helpers/VkQueries';
 import * as ls from '../helpers/localStorageHelpers'
 import _ from 'redux/node_modules/lodash';
-
 let allCountries = {};
 let allCities = {};
 // name, email, phone, city, country, mobileOS
@@ -230,7 +229,7 @@ class RegisterForm extends React.Component {
           </div>          
           <div className={'form-group' + (mobileOS.touched && mobileOS.error ? ' has-error' : '')}>
             <select {...mobileOS} value={mobileOS.value || ''}>
-              <option value='' disabled = {true}>ОС мобильного</option>
+              <option value='' disabled = {true}>мобильная ОС</option>
               <option value='Android'>Android</option>
               <option value='Apple iOS‎'>Apple iOS‎</option>
               <option value='Windows Mobile'>Windows Mobile</option>
@@ -240,7 +239,7 @@ class RegisterForm extends React.Component {
             </select>
             {mobileOS.touched && mobileOS.error && <div className = 'error-message'>{mobileOS.error}</div>}
           </div>
-          <button className = 'submit-reg btn btn-green' type="submit" disabled={submitting}>Регистрация</button>
+          <button className = 'submit btn btn-green' type="submit" disabled={submitting}>Регистрация</button>
         </form>
       </div>
     );

@@ -23,9 +23,11 @@ class LogInForm extends React.Component {
     return (
       <div className = 'form-login'>
         <div className = 'form-label'>Вход:</div>
-        <div className = 'form-switch btn' onClick = {onChangeView.bind(null, 'FORM:REGISTER')}>Регистрация</div>      
+        <div className = 'form-switch btn' onClick = {onChangeView.bind(null, 'FORM:REGISTER')}>Регистрация
+          <span className = 'reg-arrow'/>
+        </div>      
         <form onSubmit={handleSubmit(this.submit)}>
-          <div>
+          <div className={'form-group' + (login.touched && login.error ? ' has-error' : '')}>
             <input 
               type="text" 
               placeholder="E-mail" 
@@ -34,7 +36,7 @@ class LogInForm extends React.Component {
             {login.touched && login.error && <div className = 'error-message'>{login.error}</div>}
 
           </div>
-          <div>
+          <div className={'form-group' + (password.touched && password.error ? ' has-error' : '')}>
             <input 
               type="password" 
               placeholder="Пароль" 
@@ -43,7 +45,7 @@ class LogInForm extends React.Component {
             {password.touched && password.error && <div className = 'error-message'>{password.error}</div>}              
           </div>
           <div className = {"btn btn-send-pswd" + (login.error || !login.value ? " disabled" : "")} onClick = {this.handlePasswordSend}>Выслать пароль</div>
-          <button type="submit" disabled = {submitting} className='btn btn-green'>Войти</button>
+          <button type="submit" disabled = {submitting} className='btn btn-green submit'>Войти</button>
           {error && <div className="login-error">{error}</div>}
         </form>
       </div>
@@ -83,7 +85,7 @@ class LogInForm extends React.Component {
           alert('Успешный вход!')
           resolve();
         }
-      }, 1000); // simulate server latency
+      }, 500); // simulate server latency
     });
   };
 }

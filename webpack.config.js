@@ -25,8 +25,10 @@ module.exports = {
             {
               test: /\.scss$/,
               exclude: /node_modules/,
-              loader: 'style!css!sass',
+              loader: 'style!css!sass!',
             },
+            { test   : /\.(png|jpg)$/,
+            loader : 'url-loader?limit=10000'},
 
             // jsx (React), js
             {

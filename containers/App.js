@@ -2,19 +2,30 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import LogInForm from '../components/LogInForm'
 import RegisterForm from '../components/RegisterForm'
-// import ExampleForm from '../components/ExampleForm'
 
 class App extends Component {  
   render() {
     const { activeView, handleChangeView } = this.props;
     return (
         <div>
-          {activeView === 'FORM:LOGIN' &&
-           <LogInForm onSubmit={this.handleLogInSubmit} onChangeView = {handleChangeView}/> 
-          } 
-          {activeView === 'FORM:REGISTER' && 
-            <RegisterForm onSubmit={this.handleRegisterSubmit} onChangeView = {handleChangeView} /> 
-          }
+          <div className = 'wrapper'>
+            <div className = 'content-upper'>
+              <div className = 'header-block'>
+                <h3>PROTECT<span className='endline'>IM</span></h3>
+                <div className = {'desc' + (activeView === 'FORM:REGISTER' ? ' hidden' : '')}>
+                Система СМС-авторизации это метод борьбы с попытками получения несанкционированного доступа к различным информационным системам.</div>
+              </div>
+            </div>
+            <div className = {'content-lower'  + (activeView === 'FORM:REGISTER' ? ' with-large-form' : '')}>
+              <div className = {'content-lower-bg'}/>
+              {activeView === 'FORM:LOGIN' &&
+               <LogInForm onSubmit={this.handleLogInSubmit} onChangeView = {handleChangeView}/> 
+              } 
+              {activeView === 'FORM:REGISTER' && 
+                <RegisterForm onSubmit={this.handleRegisterSubmit} onChangeView = {handleChangeView} /> 
+              }
+            </div>
+          </div>
         </div>
       );
   }

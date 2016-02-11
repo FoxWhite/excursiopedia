@@ -5,11 +5,20 @@ $lightgrey: #A9A9B1;
 $darkgrey: #5D5A5A;
 $errRed: red;
 $white: #fff;
+$black: #000;
 /*---- ------- ------*/
 /*---- Variables ----*/
 /*---- ------- ------*/
 $inpH: 42px;
 $inpW: 330px; 
+$leftOffset: 45px;
+
+/*---- Breakpoints ----*/
+$screen-phone: "screen and (max-width : 480px)";
+$screen-tablet: "screen and (min-width : 768px) and (max-width : 1024px)";
+$screen-desktop: "screen  and (min-width : 1024px)";
+$screen-large: "screen  and (min-width : 1824px)";
+
 /*---- ------- ------*/
 
 * {
@@ -21,6 +30,74 @@ body {
   font-family: 'Roboto', sans-serif;
 }
 
+.content-lower, .content-upper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    transition: height .5s ease-in;
+}
+
+.content-upper{
+  top: 0;
+  text-align: justify;
+}
+.header-block {
+    width: $inpW;
+    transform: translateX($leftOffset);
+    margin: 0 auto;
+    h3 {
+      color: $white;
+      text-align: center;
+      font-size: 62px;
+      font-weight: 400;
+      margin-bottom: 20px;      
+    }
+    .endline {
+      font-weight: 700;
+    }
+    .desc {
+      font-size: 18px;
+      opacity: 1;
+      transition: .3s;
+      &.hidden{
+        opacity: 0;
+      }
+    }
+  @media #{$screen-phone} {
+    display: none;
+  }
+}
+
+.content-lower {
+  bottom: 0;
+  height: 50%;
+  min-height: 410px;
+  background-color: $black;
+
+  &.with-large-form{
+    height: 70%;
+  }
+  @media #{$screen-phone} {
+      height: 90%;    
+  }
+}
+
+.content-lower-bg {
+ background-image: url(../img/bg-man.png);
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  transform: translateX(-50%);
+  width: 1324px;
+  height: 964px;
+  // transition: .3s ease-in;
+  @media (max-width: 700px){
+    transform: translateX(-100%);
+  }
+}
+
 input, select {
   color: $darkgrey;
   height: $inpH;
@@ -30,11 +107,19 @@ input, select {
   font-weight: normal; 
   font-family: 'Roboto', sans-serif;
   border: solid 1px $green;
+  
+  &:focus {
+    outline-color: $green;
+  }
 }
 
 .btn {
   border: 0;
   cursor: pointer;
+  &.disabled {
+    cursor: auto;
+    pointer-events: none;
+  }
 
   &:hover {
     text-decoration: underline;
@@ -43,9 +128,11 @@ input, select {
 
 .btn-green {
   height: 32px;
+  padding: 0 15px;
   text-transform: uppercase;
   font-size: 11px;
   font-weight: 700;
   color: $white;
   background-color: $green;
 }
+
