@@ -18,42 +18,6 @@ class App extends Component {
         </div>
       );
   }
-
-  handleRegisterSubmit = (data, dispatch) => {
-    // simulating server latency
-    new Promise(resolve =>
-        setTimeout(() => resolve(this.addUser(data,dispatch)), 500))
-  };
-  
-  handleLogInSubmit (data) {
-    // const {store} = this.props;
-    // store.dispatch({
-    //   type: 'ADD_USER',
-    //   name: "",
-    //   email: "",
-    //   tel: "",
-    //   city: "",
-    //   country: "",
-    //   mobileOS: ""
-    // });
-    // console.log(store.getState());
-  }
-  
-  handleChangeView () {
-
-  }
-
-  addUser (data,dispatch) {
-    dispatch({
-      type: 'ADD_USER',
-      name: data.name,
-      email: data.email,
-      phone: data.phone.replace(/[^\d]/g, ''),
-      city: data.city,
-      country: data.country,
-      mobileOS: data.mobileOS
-    });
-  }
 }
 
 //TODO: move to actions

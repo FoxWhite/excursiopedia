@@ -2,6 +2,7 @@ import React from 'react';
 import {reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import _ from 'redux/node_modules/lodash';
+import * as ls from '../helpers/localStorageHelpers'
 
 class LogInForm extends React.Component {
 
@@ -18,6 +19,7 @@ class LogInForm extends React.Component {
 
   render() {
     const {fields: {login, password}, handleSubmit, onChangeView, error, submitting} = this.props;
+    console.log(login.error);
     return (
       <div className = 'form-login'>
         <div className = 'form-label'>Вход:</div>
@@ -40,7 +42,7 @@ class LogInForm extends React.Component {
               {...password}/>
             {password.touched && password.error && <div className = 'error-message'>{password.error}</div>}              
           </div>
-          <div className = "btn btn-send-pswd" onClick = {this.handlePasswordSend}>Выслать пароль</div>
+          <div className = {"btn btn-send-pswd" + (login.error || !login.value ? " disabled" : "")} onClick = {this.handlePasswordSend}>Выслать пароль</div>
           <button type="submit" disabled = {submitting} className='btn btn-green'>Войти</button>
           {error && <div className="login-error">{error}</div>}
         </form>
@@ -49,28 +51,25 @@ class LogInForm extends React.Component {
   }
 
   userFound = (login = this.props.fields.login.value) => {
-    const {userList} = this.props;
-    
-    const emailList = _.map(userList, 'email');
+    const emailList = ls.getUserEmails();
     return emailList.includes(login);
   };
 
   handlePasswordSend = () =>{
     const {fields: {login}, psw} = this.props;
-    console.log('psw:', psw);
     if (psw && this.userFound()){
       console.log('user found. sending pswd');
       alert(psw);
     }
     else {
-      console.log('not in list!');
+      login.error = 'Пользователь не найден';
+      this.forceUpdate();
     }
   };
 
   submit = (values, dispatch) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        console.log('SUBMITVALIDATING', this.userFound(values.login), values, this.props.psw);
         if (!(values.login)) {
           reject({login: 'Пожалуйста, введите e-mail', _error: 'Не удалось войти!'});
         } else if (!(values.password)) {
@@ -81,7 +80,7 @@ class LogInForm extends React.Component {
           reject({password: 'Неверный пароль', _error: 'Не удалось войти!'});
         } else {
           // dispatch(actions.login(values.login)));
-          console.log('Успешный вход!')
+          alert('Успешный вход!')
           resolve();
         }
       }, 1000); // simulate server latency

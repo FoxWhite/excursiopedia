@@ -3,6 +3,7 @@ import {reduxForm} from 'redux-form';
 // import './ObjectSelect';
 import { findDOMNode } from 'react-dom';
 import * as vk from '../helpers/VkQueries';
+import * as ls from '../helpers/localStorageHelpers'
 import _ from 'redux/node_modules/lodash';
 
 let allCountries = {};
@@ -36,6 +37,32 @@ const validate = values => {
   return errors;
 };
 
+const submit = (data, dispatch) => {
+  return new Promise((resolve, reject) =>
+      setTimeout(() => {
+        if (ls.getUserEmails().includes(data.email)) {
+          reject({email: 'Пользователь с таким e-mail уже существует'});
+        }
+        else {
+          alert('User registered!');
+          resolve(addUser(data,dispatch));
+        }
+        
+      }, 500)) // simulate server latency
+};
+
+//TODO move to actions
+const addUser = (data,dispatch) => {
+  dispatch({
+    type: 'ADD_USER',
+    name: data.name,
+    email: data.email,
+    phone: data.phone.replace(/[^\d]/g, ''),
+    city: data.city,
+    country: data.country,
+    mobileOS: data.mobileOS
+  });
+}
 
 
 
@@ -145,12 +172,12 @@ class RegisterForm extends React.Component {
 
   render() {
     // console.log(allCountries);
-    const {fields: {name, email, phone, city, country, mobileOS}, handleSubmit, submitting, onChangeView} = this.props;
+    const {fields: {name, email, phone, city, country, mobileOS}, handleSubmit, submitting, onChangeView, error} = this.props;
     return (
       <div className = 'form-register'>
         <div className = 'form-label'>Регистрация:</div>
         <div className = 'form-switch btn' onClick = {onChangeView.bind(null,'FORM:LOGIN')}>Вход</div>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit(submit)}>
           <div className={'form-group' + (name.touched && name.error ? ' has-error' : '')}>
             <input type="text" placeholder="ФИО" {...name}/>
             {name.touched && name.error && <div className = 'error-message'>{name.error}</div>}
