@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import {reducer as formReducer} from 'redux-form';
 import users from './users';
 import activeView from './activeView';
+import currPassword from './currPassword';
 import { normalizePhone} from './normalizers/registerFormNormalizers'
 
 const rootReducer = combineReducers({
@@ -11,7 +12,8 @@ const rootReducer = combineReducers({
       phone: normalizePhone
     }
   }),
-  activeView: activeView
+  activeView: activeView,
+  currentPassword: currPassword
 });
 
 export default rootReducer

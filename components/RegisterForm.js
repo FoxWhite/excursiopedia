@@ -214,7 +214,7 @@ class RegisterForm extends React.Component {
             </select>
             {mobileOS.touched && mobileOS.error && <div className = 'error-message'>{mobileOS.error}</div>}
           </div>
-          <button className = 'submit-reg btn green-btn' type="submit" disabled={submitting}>Регистрация</button>
+          <button className = 'submit-reg btn btn-green' type="submit" disabled={submitting}>Регистрация</button>
         </form>
       </div>
     );

@@ -1,3 +1,4 @@
+import uuid from 'node-uuid';
 const initialState = [
   // {
     // name: "",
@@ -14,6 +15,8 @@ export default function users(state = initialState, action) {
     case 'ADD_USER':
       return [
         {
+          id: uuid.v4(),
+          isLoggedIn: false,
           name: action.name,
           email: action.email,
           phone: action.phone,
