@@ -33,7 +33,6 @@ const validate = values => {
   if (!values.mobileOS) {
     errors.mobileOS = 'Поле обязательно для заполнения';
   }
-  console.log(errors);
   return errors;
 };
 

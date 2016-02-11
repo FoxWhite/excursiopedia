@@ -6,9 +6,13 @@ import _ from 'redux/node_modules/lodash';
 class LogInForm extends React.Component {
 
   componentWillReceiveProps (nextProps) {    
-    const {fields: {login}, generatePassword, psw} = this.props;
-    if (login.touched && login.dirty && !psw && this.loginIsCorrect()){
-      generatePassword();
+    const {fields: {login}, generatePassword, psw, active} = this.props;
+    if (login.touched && login.dirty && !psw && active !== 'login'){
+      if(this.userFound()) {
+        generatePassword();
+      } else {
+        nextProps.fields.login.error = 'Пользователь не найден';
+      }
     }
   }
 
@@ -44,17 +48,17 @@ class LogInForm extends React.Component {
     );
   }
 
-  loginIsCorrect = () => {
-    const {fields: {login}, userList} = this.props;
-
+  userFound = (login = this.props.fields.login.value) => {
+    const {userList} = this.props;
+    
     const emailList = _.map(userList, 'email');
-    return emailList.includes(login.value);
+    return emailList.includes(login);
   };
 
   handlePasswordSend = () =>{
     const {fields: {login}, psw} = this.props;
     console.log('psw:', psw);
-    if (psw && this.loginIsCorrect()){
+    if (psw && this.userFound()){
       console.log('user found. sending pswd');
       alert(psw);
     }
@@ -66,16 +70,18 @@ class LogInForm extends React.Component {
   submit = (values, dispatch) => {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
+        console.log('SUBMITVALIDATING', this.userFound(values.login), values, this.props.psw);
         if (!(values.login)) {
-          reject({login: 'Please enter e-mail!', _error: 'Login failed!'});
+          reject({login: 'Пожалуйста, введите e-mail', _error: 'Не удалось войти!'});
         } else if (!(values.password)) {
-          reject({password: 'Please enter password!', _error: 'Login failed!'});
-        } else if (!this.props.userList.includes(values.login)) {
-          reject({login: 'User does not exist', _error: 'Login failed!'});
+          reject({password: 'Пожалуйста, введите пароль', _error: 'Не удалось войти!'});
+        } else if (!this.userFound(values.login)) {
+          reject({login: 'Пользователь не найден', _error: 'Не удалось войти!'});
         } else if (values.password !== this.props.psw) {
-          reject({password: 'Wrong password', _error: 'Login failed!'});
+          reject({password: 'Неверный пароль', _error: 'Не удалось войти!'});
         } else {
-          // dispatch(showResults(values));
+          // dispatch(actions.login(values.login)));
+          console.log('Успешный вход!')
           resolve();
         }
       }, 1000); // simulate server latency
