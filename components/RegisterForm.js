@@ -146,11 +146,11 @@ class RegisterForm extends React.Component {
 
   render() {
     // console.log(allCountries);
-    const {fields: {name, email, phone, city, country, mobileOS}, handleSubmit, submitting} = this.props;
+    const {fields: {name, email, phone, city, country, mobileOS}, handleSubmit, submitting, onChangeView} = this.props;
     return (
       <div className = 'form-register'>
         <div className = 'form-label'>Регистрация:</div>
-        <div className = 'form-switch'>Вход</div>
+        <div className = 'form-switch btn' onClick = {onChangeView.bind(null,'FORM:LOGIN')}>Вход</div>
         <form onSubmit={handleSubmit}>
           <div className={'form-group' + (name.touched && name.error ? ' has-error' : '')}>
             <input type="text" placeholder="ФИО" {...name}/>
@@ -214,7 +214,7 @@ class RegisterForm extends React.Component {
             </select>
             {mobileOS.touched && mobileOS.error && <div className = 'error-message'>{mobileOS.error}</div>}
           </div>
-          <button className = 'submit-reg green-btn' type="submit" disabled={submitting}>Регистрация</button>
+          <button className = 'submit-reg btn green-btn' type="submit" disabled={submitting}>Регистрация</button>
         </form>
       </div>
     );

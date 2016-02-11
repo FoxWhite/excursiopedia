@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
+import {connect} from 'react-redux';
 import LogInForm from '../components/LogInForm'
 import RegisterForm from '../components/RegisterForm'
 // import ExampleForm from '../components/ExampleForm'
 
-export default class App extends Component {
-
-  ComponentDidMount() {
-    const {store} = this.props;
-    store.subscribe(render);
-  }
-  
+class App extends Component {  
   render() {
+    const { activeView, handleChangeView } = this.props;
     return (
         <div>
-          {/*<LogInForm onSubmit={this.handleLogInSubmit} />*/}
-          <RegisterForm onSubmit={this.handleRegisterSubmit} />
+          {activeView === 'FORM:LOGIN' &&
+           <LogInForm onSubmit={this.handleLogInSubmit} onChangeView = {handleChangeView}/> 
+          } 
+          {activeView === 'FORM:REGISTER' && 
+            <RegisterForm onSubmit={this.handleRegisterSubmit} onChangeView = {handleChangeView} /> 
+          }
         </div>
       );
   }
@@ -24,7 +24,7 @@ export default class App extends Component {
     new Promise(resolve =>
         setTimeout(() => resolve(this.addUser(data,dispatch)), 500))
   };
-
+  
   handleLogInSubmit (data) {
     // const {store} = this.props;
     // store.dispatch({
@@ -38,6 +38,10 @@ export default class App extends Component {
     // });
     // console.log(store.getState());
   }
+  
+  handleChangeView () {
+
+  }
 
   addUser (data,dispatch) {
     dispatch({
@@ -50,6 +54,29 @@ export default class App extends Component {
       mobileOS: data.mobileOS
     });
   }
-  
 }
 
+//TODO: move to actions
+const changeView = (newView) =>{
+  switch (newView) {
+    case 'FORM:LOGIN':
+      return {type: 'SWITCH_TO_LOGIN'}
+    case 'FORM:REGISTER':
+      return {type: 'SWITCH_TO_REGISTER'}
+    default:
+      return {type: 'SWITCH_TO_LOGIN'}
+  }
+}
+
+
+const mapStateToProps = (state) => {
+    return {activeView: state.activeView};
+}  
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleChangeView: function(newView){ 
+          dispatch(changeView(newView))},
+    }
+}
+
+module.exports = connect(mapStateToProps,mapDispatchToProps)(App);
