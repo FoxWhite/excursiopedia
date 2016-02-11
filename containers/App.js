@@ -40,12 +40,11 @@ export default class App extends Component {
   }
 
   addUser (data,dispatch) {
-    console.log('data',data);
     dispatch({
       type: 'ADD_USER',
       name: data.name,
       email: data.email,
-      tel: data.tel,
+      phone: data.phone.replace(/[^\d]/g, ''),
       city: data.city,
       country: data.country,
       mobileOS: data.mobileOS

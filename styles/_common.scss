@@ -1,3 +1,48 @@
+/*---- Palette ------*/
+/*---- ------- ------*/
+$green: #71993a;
+$lightgrey: #A9A9B1;
+$darkgrey: #5D5A5A;
+$errRed: red;
+$white: #fff;
+/*---- ------- ------*/
+/*---- Variables ----*/
+/*---- ------- ------*/
+$inpH: 42px;
+$inpW: 330px; 
+/*---- ------- ------*/
+
+* {
+  box-sizing: border-box;
+}
+
 body {
-  background: #71993a;
+  background: $green;
+  font-family: 'Roboto', sans-serif;
+}
+
+input, select {
+  color: $darkgrey;
+  height: $inpH;
+  width: $inpW; 
+  padding: 0 13px;
+  font-size: 18px;
+  font-weight: normal; 
+  font-family: 'Roboto', sans-serif;
+  border: solid 1px $green;
+}
+
+.green-btn {
+  border: 0;
+  height: 32px;
+  font-size: 11px;
+  font-weight: 700;
+  color: $white;
+  background-color: $green;
+  text-transform: uppercase;
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

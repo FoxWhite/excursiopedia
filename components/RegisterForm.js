@@ -11,25 +11,29 @@ let allCities = {};
 const validate = values => {
   const errors = {};
   if (!values.name) {
-    errors.name = 'Required';
+    errors.name = 'Поле обязательно для заполнения';
   }
   if (!values.email) {
-    errors.email = 'Required';
+    errors.email = 'Поле обязательно для заполнения';
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-    errors.email = 'Invalid email address';
+    errors.email = 'Некорректный E-mail';
   }
   if (!values.phone) {
-    errors.phone = 'Required';
+    errors.phone = 'Поле обязательно для заполнения';
+  }
+  else if (values.phone.length < 12 ){
+    errors.phone = 'Номер введён некорректно';
   }
   if (!values.city) {
-    errors.city = 'Required';
+    errors.city = 'Поле обязательно для заполнения';
   }
   if (!values.country) {
-    errors.country = 'Required';
+    errors.country = 'Поле обязательно для заполнения';
   }
   if (!values.mobileOS) {
-    errors.mobileOS = 'Required';
+    errors.mobileOS = 'Поле обязательно для заполнения';
   }
+  console.log(errors);
   return errors;
 };
 
@@ -43,7 +47,7 @@ class RegisterForm extends React.Component {
     this.state = {
       matchingCountries: [],
       matchingCities: []
-    }   
+    }
   }
 
   componentDidMount() {  
@@ -53,6 +57,7 @@ class RegisterForm extends React.Component {
     }); 
 
     this.updateMatchingCities();
+    this.fixPlaceholders();   
   }
 
   componentWillReceiveProps (nextProps) {    
@@ -73,10 +78,7 @@ class RegisterForm extends React.Component {
       }   
       else {
          console.warn('NO COUNTRY MATCH');
-        countryField.onChange('');
-        countryField.onFocus();
-        this.refs.countryInput.focus();
-
+        countryField.onChange(undefined);
       }
     }
     // handle city input losing focus:
@@ -97,6 +99,17 @@ class RegisterForm extends React.Component {
     refs.countrySuggestor.value = countriesArr.length > 0 ? countriesArr[0] : ''
     refs.citySuggestor.value = citiesArr.length > 0 ? citiesArr[0] : ''
   }
+
+  /* Removing input placeholders on focus */
+  fixPlaceholders = () => {
+    _.forOwn(this.props.fields, (field, key) => {
+      let _onFocus = field.onFocus;
+      field.onFocus = (event) => {
+        _onFocus(event);
+        if (event) event.target.placeholder = '';
+      }
+    });
+  };
 
 
   handleCountriesInput = (e) => {
@@ -136,6 +149,8 @@ class RegisterForm extends React.Component {
     const {fields: {name, email, phone, city, country, mobileOS}, handleSubmit, submitting} = this.props;
     return (
       <div className = 'form-register'>
+        <div className = 'form-label'>Регистрация:</div>
+        <div className = 'form-switch'>Вход</div>
         <form onSubmit={handleSubmit}>
           <div className={'form-group' + (name.touched && name.error ? ' has-error' : '')}>
             <input type="text" placeholder="ФИО" {...name}/>
@@ -145,42 +160,46 @@ class RegisterForm extends React.Component {
             <input type="text" placeholder="E-mail" {...email}/>
             {email.touched && email.error && <div className = 'error-message'>{email.error}</div>}
           </div>
-          <div className={'form-group' + (phone.touched && phone.error ? ' has-error' : '')}>
-            <input type="text" placeholder="Телефон" {...phone}/>
+          <div className={'form-group input-phone' + (phone.touched && phone.error ? ' has-error' : '')}>
+            <input type="text" placeholder="999)999-9999" {...phone}/>
             {phone.touched && phone.error && <div className = 'error-message'>{phone.error}</div>}
           </div>
           <div className={'input-country form-group' + (country.touched && country.error ? ' has-error' : '')}>
-            <input
-              ref = 'countryInput' 
-              className = 'input-country-real'
-              type="text" 
-              placeholder="Страна" 
-              autoComplete={'off'}
-              onKeyUp = {this.handleCountriesInput} 
-              {...country}
-            />
-            <input 
-              className = 'input-country-fake'
-              ref = 'countrySuggestor'
-              type="text" 
-              disabled = 'disabled' 
-            />
+            <div className = 'input-country-wrapper'>
+              <input
+                ref = 'countryInput' 
+                className = 'input-country-real'
+                type="text" 
+                placeholder="Страна" 
+                autoComplete={'off'}
+                onKeyUp = {this.handleCountriesInput} 
+                {...country}
+              />
+              <input 
+                className = 'input-country-fake'
+                ref = 'countrySuggestor'
+                type="text" 
+                disabled = 'disabled' 
+              />
+            </div>
             {country.touched && country.error && <div className = 'error-message'>{country.error}</div>}
           </div>
           <div className={'input-city form-group' + (city.touched && city.error ? ' has-error' : '')}>
-            <input 
-              onKeyUp = {this.handleCitiesInput}
-              className = 'input-city-real'
-              type="text" 
-              placeholder="Город" 
-              {...city}
-            />
-            <input 
-              className = 'input-country-fake'
-              ref = 'citySuggestor'
-              type="text" 
-              disabled = 'disabled' 
-              />    
+            <div className = 'input-city-wrapper'>
+              <input 
+                onKeyUp = {this.handleCitiesInput}
+                className = 'input-city-real'
+                type="text" 
+                placeholder="Город" 
+                {...city}
+              />
+              <input 
+                className = 'input-city-fake'
+                ref = 'citySuggestor'
+                type="text" 
+                disabled = 'disabled' 
+                />    
+              </div>
               {city.touched && city.error && <div className = 'error-message'>{city.error}</div>}          
           </div>          
           <div className={'form-group' + (mobileOS.touched && mobileOS.error ? ' has-error' : '')}>
@@ -195,7 +214,7 @@ class RegisterForm extends React.Component {
             </select>
             {mobileOS.touched && mobileOS.error && <div className = 'error-message'>{mobileOS.error}</div>}
           </div>
-          <button type="submit" disabled={submitting}>Регистрация</button>
+          <button className = 'submit-reg green-btn' type="submit" disabled={submitting}>Регистрация</button>
         </form>
       </div>
     );
