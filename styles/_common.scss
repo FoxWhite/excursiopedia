@@ -14,8 +14,8 @@ $inpW: 330px;
 $leftOffset: 45px;
 
 /*---- Breakpoints ----*/
-$screen-phone: "screen and (max-width : 480px)";
-$screen-smalltablet: "screen and (min-width : 479px) and (max-width : 700px)";
+$screen-phone: "screen and (max-device-width : 480px)";
+$screen-smalltablet: "screen and (min-width : 481px) and (max-width : 700px)";
 $screen-tablet: "screen and (min-width : 768px) and (max-width : 1024px)";
 $screen-desktop: "screen  and (min-width : 1024px)";
 /*---- ------- ------*/
@@ -28,6 +28,9 @@ body {
   background: $green;
   font-family: 'Roboto', sans-serif;
   font-size: 18px;
+  // position: relative;
+  margin: 0;
+  height: 100%;
 }
 
 .content-lower, .content-upper {
@@ -42,7 +45,6 @@ body {
   text-align: justify;
 
   .header-block {
-      width: $inpW;
       transform: translateX($leftOffset);
       margin: 0 auto;
       h3 {
@@ -56,11 +58,11 @@ body {
         font-weight: 700;
       }
 
-    @media #{$screen-smalltablet}{
+    @media #{$screen-smalltablet}, #{$screen-phone}{
       transform: translateX(0);
     }  
     @media #{$screen-phone} {
-      display: none;
+      h3{font-size: 5em}
     }
   }
  
@@ -70,7 +72,7 @@ body {
 
     transform: translateX($positionWithOffset);
     opacity: 1;
-    transition: .3s;
+    transition: opacity .3s;
     &.hidden{
       opacity: 0;
     }
@@ -94,7 +96,8 @@ body {
     height: 70%;
   }
   @media #{$screen-phone} {
-      height: 90% !important;    
+      height: 80% !important;   
+      position: absolute; 
   }
 }
 
@@ -111,21 +114,6 @@ body {
   // transition: .3s ease-in;
   @media #{$screen-smalltablet}, #{$screen-phone}{
     transform: translateX(-100%);
-  }
-}
-
-input, select {
-  color: $darkgrey;
-  height: $inpH;
-  width: $inpW; 
-  padding: 0 13px;
-  font-size: 18px;
-  font-weight: normal; 
-  font-family: 'Roboto', sans-serif;
-  border: solid 1px $green;
-  
-  &:focus {
-    outline-color: $green;
   }
 }
 
@@ -150,5 +138,11 @@ input, select {
   font-weight: 700;
   color: $white;
   background-color: $green;
+  
+  @media #{$screen-phone} {
+   height: 100px; 
+   font-size: 2em;
+   padding: 0 50px;
+  }  
 }
 

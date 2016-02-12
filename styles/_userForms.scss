@@ -13,6 +13,9 @@
   @media #{$screen-phone}, #{$screen-smalltablet} {
     transform: translateX(0);
   }
+  @media #{$screen-phone} {
+    width: 80%;
+  }
 }  
 
 .form-label {
@@ -24,6 +27,9 @@
 
   font-size: 24px;
   font-weight: 700;
+  @media #{$screen-phone} {  
+    font-size: 3em;
+  }  
 }
 
 .form-switch {
@@ -33,7 +39,7 @@
   right: 0;
   color: $green;
   @media #{$screen-phone} {  
-    font-size: 17px;
+    font-size: 3em;
   }
 }
 
@@ -58,8 +64,34 @@
     color: $errRed;
     pointer-events: none;
   }
+  @media #{$screen-phone} {
+    height: 100px; 
+    margin-top: 25px;
 
+    .error-message{
+      font-size: 2em;
+    }
+  }
 }  
+
+input, select {
+  color: $darkgrey;
+  height: $inpH;
+  width: 100%; 
+  padding: 0 13px;
+  font-size: 18px;
+  font-weight: normal; 
+  font-family: 'Roboto', sans-serif;
+  border: solid 1px $green;
+  
+  &:focus {
+    outline-color: $green;
+  }
+  @media #{$screen-phone} {
+   height: 100px; 
+   font-size: 3em;
+  }
+}
 
 .submit {
   float: right;

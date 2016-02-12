@@ -39,12 +39,19 @@
       padding-left: 13px;  
       pointer-events: none;
       color: $lightgrey;
-
+      
+      @media #{$screen-phone} {  
+        font-size: 3em;
+        bottom: 20px
+      }      
     }
   }
 
   input[name='phone'] {
     padding-left: 35px;
+    @media #{$screen-phone} {  
+      padding-left: 90px;
+    }  
   }
 
 }
