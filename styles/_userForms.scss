@@ -4,7 +4,7 @@
     to   { opacity: 1; }
 }
 
-.form-register, .form-login{
+.form-register, .form-login {
   width: $inpW;
   position: relative;
   margin: 100px auto;
@@ -38,11 +38,11 @@
 }
 
 
-.form-group{    
+.form-group {    
   margin-top: 18px;
   position: relative;
 
-  &.has-error input:not([disabled]), &.has-error select{
+  &.has-error input:not([disabled]), &.has-error select {
     box-shadow: inset -1px -1px 20px -6px $errRed;
     border-color: $errRed;
     outline-color: $errRed;
@@ -61,7 +61,13 @@
 
 }  
 
-.submit{
+.submit {
   float: right;
   margin-top: 30px;
+
+  &[disabled] {
+    background-color: $lightgrey;
+    pointer-events: none;
+    cursor: auto;
+  }
 }

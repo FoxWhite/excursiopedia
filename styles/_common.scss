@@ -27,6 +27,7 @@ $screen-desktop: "screen  and (min-width : 1024px)";
 body {
   background: $green;
   font-family: 'Roboto', sans-serif;
+  font-size: 18px;
 }
 
 .content-lower, .content-upper {
@@ -39,34 +40,47 @@ body {
 .content-upper{
   top: 0;
   text-align: justify;
-}
-.header-block {
-    width: $inpW;
-    transform: translateX($leftOffset);
-    margin: 0 auto;
-    h3 {
-      color: $white;
-      text-align: center;
-      font-size: 62px;
-      font-weight: 400;
-      margin-bottom: 20px;      
-    }
-    .endline {
-      font-weight: 700;
-    }
-    .desc {
-      font-size: 18px;
-      opacity: 1;
-      transition: .3s;
-      &.hidden{
-        opacity: 0;
+
+  .header-block {
+      width: $inpW;
+      transform: translateX($leftOffset);
+      margin: 0 auto;
+      h3 {
+        color: $white;
+        text-align: center;
+        font-size: 62px;
+        font-weight: 400;
+        margin-bottom: 20px;      
       }
+      .endline {
+        font-weight: 700;
+      }
+
+    @media #{$screen-smalltablet}{
+      transform: translateX(0);
+    }  
+    @media #{$screen-phone} {
+      display: none;
     }
-  @media #{$screen-smalltablet}{
-    transform: translateX(0);
-  }  
-  @media #{$screen-phone} {
-    display: none;
+  }
+ 
+  .desc {
+    $position:           calc(50% - #{$inpW/2});
+    $positionWithOffset: calc(50% - #{$inpW/2 - $leftOffset});
+
+    transform: translateX($positionWithOffset);
+    opacity: 1;
+    transition: .3s;
+    &.hidden{
+      opacity: 0;
+    }
+    
+    @media #{$screen-smalltablet}{
+      transform: translateX($position);
+    }  
+    @media #{$screen-phone} {
+      display: none;
+    }    
   }
 }
 

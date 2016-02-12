@@ -46,7 +46,10 @@ class LogInForm extends React.Component {
           </div>
           <div className = {"btn btn-send-pswd" + (login.error || !login.value ? " disabled" : "")} onClick = {this.handlePasswordSend}>Выслать пароль</div>
           <button type="submit" disabled = {submitting} className='btn btn-green submit'>Войти</button>
-          {error && <div className="login-error">{error}</div>}
+          <div className="checkbox-own-device">
+            <input id="chbx-own" type="checkbox" name="check" value="chbx-own"/>
+            <label htmlFor="chbx-own">чужой компьютер</label>
+          </div>
         </form>
       </div>
     );
