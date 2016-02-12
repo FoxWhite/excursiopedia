@@ -25,7 +25,6 @@
     "babel-preset-react": "^6.3.13",
     "babel-preset-stage-1": "^6.5.0",
     "babel-register": "^6.4.3",
-    "classnames": "^2.2.3",
     "css-loader": "^0.23.1",
     "jquery": "^2.2.0",
     "jsx-loader": "^0.13.2",
