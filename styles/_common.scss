@@ -112,7 +112,7 @@ body {
   width: 1324px;
   height: 964px;
   // transition: .3s ease-in;
-  @media #{$screen-smalltablet}, #{$screen-phone}{
+  @media #{$screen-smalltablet}, #{$screen-phone}, (max-width : 480px){
     transform: translateX(-100%);
   }
 }
