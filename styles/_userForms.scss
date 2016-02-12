@@ -10,7 +10,7 @@
   margin: 100px auto;
   animation: fadein 1s;
   transform: translateX($leftOffset);
-  @media #{$screen-phone} {
+  @media #{$screen-phone}, #{$screen-smalltablet} {
     transform: translateX(0);
   }
 }  

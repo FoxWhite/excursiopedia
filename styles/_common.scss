@@ -15,10 +15,9 @@ $leftOffset: 45px;
 
 /*---- Breakpoints ----*/
 $screen-phone: "screen and (max-width : 480px)";
+$screen-smalltablet: "screen and (min-width : 479px) and (max-width : 700px)";
 $screen-tablet: "screen and (min-width : 768px) and (max-width : 1024px)";
 $screen-desktop: "screen  and (min-width : 1024px)";
-$screen-large: "screen  and (min-width : 1824px)";
-
 /*---- ------- ------*/
 
 * {
@@ -63,6 +62,9 @@ body {
         opacity: 0;
       }
     }
+  @media #{$screen-smalltablet}{
+    transform: translateX(0);
+  }  
   @media #{$screen-phone} {
     display: none;
   }
@@ -78,7 +80,7 @@ body {
     height: 70%;
   }
   @media #{$screen-phone} {
-      height: 90%;    
+      height: 90% !important;    
   }
 }
 
@@ -93,7 +95,7 @@ body {
   width: 1324px;
   height: 964px;
   // transition: .3s ease-in;
-  @media (max-width: 700px){
+  @media #{$screen-smalltablet}, #{$screen-phone}{
     transform: translateX(-100%);
   }
 }
