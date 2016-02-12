@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import LogInForm from '../components/LogInForm'
 import RegisterForm from '../components/RegisterForm'
+import * as actions from '../actions/actions'
 
 class App extends Component {  
   render() {
@@ -32,18 +33,6 @@ class App extends Component {
   }
 }
 
-//TODO: move to actions
-const changeView = (newView) =>{
-  switch (newView) {
-    case 'FORM:LOGIN':
-      return {type: 'SWITCH_TO_LOGIN'}
-    case 'FORM:REGISTER':
-      return {type: 'SWITCH_TO_REGISTER'}
-    default:
-      return {type: 'SWITCH_TO_LOGIN'}
-  }
-}
-
 
 const mapStateToProps = (state) => {
     return {activeView: state.activeView};
@@ -51,7 +40,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         handleChangeView: function(newView){ 
-          dispatch(changeView(newView))},
+          dispatch(actions.changeView(newView))},
     }
 }
 

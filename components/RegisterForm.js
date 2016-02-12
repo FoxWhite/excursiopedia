@@ -4,10 +4,11 @@ import {reduxForm} from 'redux-form';
 import { findDOMNode } from 'react-dom';
 import * as vk from '../helpers/VkQueries';
 import * as ls from '../helpers/localStorageHelpers'
+import * as actions from '../actions/actions'
 import _ from 'redux/node_modules/lodash';
+
 let allCountries = {};
 let allCities = {};
-// name, email, phone, city, country, mobileOS
 const validate = values => {
   const errors = {};
   if (!values.name) {
@@ -46,21 +47,15 @@ const submit = (data, dispatch) => {
           alert('User registered!');
           resolve(addUser(data,dispatch));
         }
+        console.log('users in storage:');
+        console.table(ls.getUserList());
         
       }, 500)) // simulate server latency
 };
 
 //TODO move to actions
 const addUser = (data,dispatch) => {
-  dispatch({
-    type: 'ADD_USER',
-    name: data.name,
-    email: data.email,
-    phone: data.phone.replace(/[^\d]/g, ''),
-    city: data.city,
-    country: data.country,
-    mobileOS: data.mobileOS
-  });
+  dispatch(actions.addUser(data));
 }
 
 
@@ -160,8 +155,6 @@ class RegisterForm extends React.Component {
   //fetching cities data from vk.api and updating allCities[] based on country and city input fields
   updateMatchingCities = (cityInput = this.props.fields.city.value) => {
     let countryId = (this.state.matchingCountries.length > 0) ? this.state.matchingCountries[0].cid : 1; // Pick Russian cities if no country selected
-    console.log('cityInput', cityInput);
-
     vk.getAllCities(data => {
       allCities = _.map(data, 'title');
     },
@@ -170,8 +163,13 @@ class RegisterForm extends React.Component {
 
 
   render() {
-    // console.log(allCountries);
-    const {fields: {name, email, phone, city, country, mobileOS}, handleSubmit, submitting, onChangeView, error} = this.props;
+    const {fields: {name, email, phone, city, country, mobileOS}, 
+      handleSubmit, 
+      submitting, 
+      onChangeView, 
+      error
+    } = this.props;
+    
     return (
       <div className = 'form-register'>
         <div className = 'form-label'>Регистрация:</div>

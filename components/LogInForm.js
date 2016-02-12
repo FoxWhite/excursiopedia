@@ -3,6 +3,7 @@ import {reduxForm} from 'redux-form';
 import {connect} from 'react-redux';
 import _ from 'redux/node_modules/lodash';
 import * as ls from '../helpers/localStorageHelpers'
+import * as actions from '../actions/actions'
 
 class LogInForm extends React.Component {
 
@@ -98,10 +99,7 @@ let loginForm =  reduxForm({
   fields: ['login', 'password']
 })(LogInForm);
 
-//TODO: move to actions
-const ACTIONgeneratePassword = () =>{
-  return {type: 'GENERATE_PSW'} 
-}
+
 
 const mapStateToProps = (state) => {
     return {
@@ -111,7 +109,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         generatePassword: function(){ 
-          dispatch(ACTIONgeneratePassword())
+          dispatch(actions.generatePassword())
         }
     };
 }

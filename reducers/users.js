@@ -1,14 +1,5 @@
 import uuid from 'node-uuid';
-const initialState = [
-  // {
-    // name: "",
-    // email: "",
-    // tel: "",
-    // city: "",
-    // country: "",
-    // mobileOS: ""
-  // }
-]
+const initialState = [];
 
 export default function users(state = initialState, action) {
   switch (action.type) {
@@ -16,7 +7,7 @@ export default function users(state = initialState, action) {
       return [
         {
           id: uuid.v4(),
-          isLoggedIn: false,
+          // isLoggedIn: false,
           name: action.name,
           email: action.email,
           phone: action.phone,
